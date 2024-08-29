@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import WinningBoards from "../constants/winningBoards";
 
 let initialBlocks = [
   [null, null, null],
@@ -8,38 +7,72 @@ let initialBlocks = [
 ];
 
 export default function GameBoard({ getNextSymbol }) {
-  const [currentSymbol, setCurrentSymbol] = useState("X");
+  const [nextSymbol, setNextSymbol] = useState("X");
+  const [prevSymbol, setPrevSymbol] = useState("");
   const [blocks, setBlocks] = useState(initialBlocks);
+  const [rowCol, setRowCol] = useState([null, null]);
 
-  function checkWin() {
-    WinningBoards.forEach((winningBoard) => {
-      if (blocks == winningBoard) {
-      }
-    });
+  function checkWin(updatedBlocks, symbol, rowCol) {
+    const [row, col] = rowCol;
+
+    if (row == null || col == null) {
+      return;
+    }
+
+    // horizontal
+    if (updatedBlocks[row].every((col) => col == symbol)) {
+      window.alert(`${symbol} WIN Horizontal -`);
+    }
+    // vertical
+    else if (
+      [
+        updatedBlocks[0][col],
+        updatedBlocks[1][col],
+        updatedBlocks[2][col],
+      ].every((elem) => elem == symbol)
+    ) {
+      window.alert(`${symbol} WIN Vertical |`);
+    }
+    // diagonal /
+    else if (
+      [updatedBlocks[0][2], updatedBlocks[1][1], updatedBlocks[2][0]].every(
+        (elem) => elem == symbol
+      )
+    ) {
+      window.alert(`${symbol} WIN Diagonal /`);
+    }
+    // diagonal \
+    else if (
+      [updatedBlocks[0][0], updatedBlocks[1][1], updatedBlocks[2][2]].every(
+        (elem) => elem == symbol
+      )
+    ) {
+      window.alert(`${symbol} WIN Diagonal \\`);
+    }
   }
 
-  function handleOnSelectBlock(event) {
+  async function handleOnSelectBlock(event) {
     const [row, _, col] = event.target.value;
-    console.log({ row, col });
+    setRowCol([row, col]);
 
-    setCurrentSymbol((curr) => {
+    setNextSymbol((curr) => {
+      setPrevSymbol(curr);
       const newSymbol = curr === "X" ? "O" : "X";
       getNextSymbol(newSymbol);
       return newSymbol;
     });
 
     // replace the specific row,col with X
-    console.log({ after: initialBlocks });
     setBlocks((prevBlocks) => {
       const updatedBlocks = [
         ...prevBlocks.map((innerBlock) => [...innerBlock]),
       ];
-      updatedBlocks[row][col] = currentSymbol;
+      updatedBlocks[row][col] = nextSymbol;
       return updatedBlocks;
     });
   }
 
-  console.log("re-render");
+  checkWin(blocks, prevSymbol, rowCol);
 
   return (
     <ol id="game-board">
