@@ -3,17 +3,24 @@ import GameBoard from "./components/GameBoard";
 import { useState } from "react";
 
 function App() {
-  function getNextSymbol(nextSymbol) {
-    console.log({ nextSymbol });
-  }
+  const [players, setPlayersFn] = useState({ X: "Player 1", O: "Player 2" });
+
   return (
     <main>
       <div id="game-container">
         <ol id="players">
-          <Player defaultName="Player 1" symbol="X" />
-          <Player defaultName="Player 2" symbol="O" />
+          <Player
+            defaultName={players["X"]}
+            symbol="X"
+            setPlayersFn={setPlayersFn}
+          />
+          <Player
+            defaultName={players["O"]}
+            symbol="O"
+            setPlayersFn={setPlayersFn}
+          />
         </ol>
-        <GameBoard getNextSymbol={getNextSymbol} />
+        <GameBoard players={players} />
       </div>
     </main>
   );

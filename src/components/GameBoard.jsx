@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import GameOver from "./GameOver";
 
 let initialBlocks = [
   [null, null, null],
@@ -6,11 +7,13 @@ let initialBlocks = [
   [null, null, null],
 ];
 
-export default function GameBoard({ getNextSymbol }) {
+export default function GameBoard({ players }) {
   const [nextSymbol, setNextSymbol] = useState("X");
   const [prevSymbol, setPrevSymbol] = useState("");
   const [blocks, setBlocks] = useState(initialBlocks);
   const [rowCol, setRowCol] = useState([null, null]);
+
+  const [winner, setWinner] = useState(null);
 
   function checkWin(updatedBlocks, symbol, rowCol) {
     const [row, col] = rowCol;
@@ -21,7 +24,7 @@ export default function GameBoard({ getNextSymbol }) {
 
     // horizontal
     if (updatedBlocks[row].every((col) => col == symbol)) {
-      window.alert(`${symbol} WIN Horizontal -`);
+      setWinner(players[symbol]);
     }
     // vertical
     else if (
@@ -31,7 +34,7 @@ export default function GameBoard({ getNextSymbol }) {
         updatedBlocks[2][col],
       ].every((elem) => elem == symbol)
     ) {
-      window.alert(`${symbol} WIN Vertical |`);
+      setWinner(players[symbol]);
     }
     // diagonal /
     else if (
@@ -39,7 +42,7 @@ export default function GameBoard({ getNextSymbol }) {
         (elem) => elem == symbol
       )
     ) {
-      window.alert(`${symbol} WIN Diagonal /`);
+      setWinner(players[symbol]);
     }
     // diagonal \
     else if (
@@ -47,7 +50,7 @@ export default function GameBoard({ getNextSymbol }) {
         (elem) => elem == symbol
       )
     ) {
-      window.alert(`${symbol} WIN Diagonal \\`);
+      setWinner(players[symbol]);
     }
   }
 
@@ -58,7 +61,6 @@ export default function GameBoard({ getNextSymbol }) {
     setNextSymbol((curr) => {
       setPrevSymbol(curr);
       const newSymbol = curr === "X" ? "O" : "X";
-      getNextSymbol(newSymbol);
       return newSymbol;
     });
 
@@ -68,30 +70,34 @@ export default function GameBoard({ getNextSymbol }) {
         ...prevBlocks.map((innerBlock) => [...innerBlock]),
       ];
       updatedBlocks[row][col] = nextSymbol;
+      checkWin(updatedBlocks, nextSymbol, [row, col]);
       return updatedBlocks;
     });
   }
 
-  checkWin(blocks, prevSymbol, rowCol);
-
   return (
-    <ol id="game-board">
-      {blocks.map((row, rowIndex) => (
-        <li key={rowIndex}>
-          <ol>
-            {row.map((playSymbol, columnIndex) => (
-              <li key={columnIndex}>
-                <button
-                  value={[rowIndex, columnIndex]}
-                  onClick={handleOnSelectBlock}
-                >
-                  {playSymbol}
-                </button>
-              </li>
-            ))}
-          </ol>
-        </li>
-      ))}
-    </ol>
+    <>
+      {winner && (
+        <GameOver winner={winner} setWinner={setWinner} setBlocks={setBlocks} />
+      )}
+      <ol id="game-board">
+        {blocks.map((row, rowIndex) => (
+          <li key={rowIndex}>
+            <ol>
+              {row.map((playSymbol, columnIndex) => (
+                <li key={columnIndex}>
+                  <button
+                    value={[rowIndex, columnIndex]}
+                    onClick={handleOnSelectBlock}
+                  >
+                    {playSymbol}
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </li>
+        ))}
+      </ol>
+    </>
   );
 }

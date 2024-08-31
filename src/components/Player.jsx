@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Player({ defaultName, symbol }) {
+export default function Player({ defaultName, symbol, setPlayersFn }) {
   const [isEditing, setIsEditing] = useState(false);
   const [playerName, setPlayerName] = useState(defaultName);
 
@@ -17,7 +17,12 @@ export default function Player({ defaultName, symbol }) {
   }
 
   function handleOnChange(event) {
-    setPlayerName(event.target.value);
+    const newName = event.target.value;
+    setPlayersFn((players) => {
+      players[symbol] = newName;
+      return players;
+    });
+    setPlayerName(newName);
   }
 
   return (
