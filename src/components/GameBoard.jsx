@@ -7,8 +7,7 @@ let initialBlocks = [
   [null, null, null],
 ];
 
-export default function GameBoard({ players }) {
-  const [nextSymbol, setNextSymbol] = useState("X");
+export default function GameBoard({ players, nextSymbol, setNextSymbol }) {
   const [prevSymbol, setPrevSymbol] = useState("");
   const [blocks, setBlocks] = useState(initialBlocks);
   const [rowCol, setRowCol] = useState([null, null]);
