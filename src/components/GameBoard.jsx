@@ -11,6 +11,7 @@ export default function GameBoard({ players, nextSymbol, setNextSymbol }) {
   const [prevSymbol, setPrevSymbol] = useState("");
   const [blocks, setBlocks] = useState(initialBlocks);
   const [rowCol, setRowCol] = useState([null, null]);
+  const [count, setCount] = useState(0);
 
   const [winner, setWinner] = useState(null);
 
@@ -54,6 +55,7 @@ export default function GameBoard({ players, nextSymbol, setNextSymbol }) {
   }
 
   async function handleOnSelectBlock(event) {
+    setCount((count) => count + 1);
     const [row, _, col] = event.target.value;
     setRowCol([row, col]);
 
@@ -74,10 +76,18 @@ export default function GameBoard({ players, nextSymbol, setNextSymbol }) {
     });
   }
 
+  const isDraw = winner == null && count === 9;
+
   return (
     <>
-      {winner && (
-        <GameOver winner={winner} setWinner={setWinner} setBlocks={setBlocks} />
+      {(winner || isDraw) && (
+        <GameOver
+          winner={winner}
+          setWinner={setWinner}
+          setBlocks={setBlocks}
+          setCount={setCount}
+          isDraw={isDraw}
+        />
       )}
       <ol id="game-board">
         {blocks.map((row, rowIndex) => (
