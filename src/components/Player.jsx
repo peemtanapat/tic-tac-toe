@@ -3,7 +3,7 @@ import { useState } from "react";
 export default function Player({
   defaultName,
   symbol,
-  setPlayersFn,
+  setPlayers,
   doHighlight,
 }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -23,7 +23,7 @@ export default function Player({
 
   function handleOnChange(event) {
     const newName = event.target.value;
-    setPlayersFn((players) => {
+    setPlayers((players) => {
       players[symbol] = newName;
       return players;
     });
@@ -31,7 +31,7 @@ export default function Player({
   }
 
   return (
-    <li className={doHighlight && "active"}>
+    <li className={doHighlight ? "active" : undefined}>
       <span className="player">{playerNameElement}</span>
 
       <span className="player-symbol">{symbol}</span>

@@ -3,7 +3,7 @@ import GameBoard from "./components/GameBoard";
 import { useState } from "react";
 
 function App() {
-  const [players, setPlayersFn] = useState({ X: "Player 1", O: "Player 2" });
+  const [players, setPlayers] = useState({ X: "Player 1", O: "Player 2" });
   const [nextSymbol, setNextSymbol] = useState("X");
   const [history, setHistory] = useState([]);
 
@@ -14,13 +14,13 @@ function App() {
           <Player
             defaultName={players["X"]}
             symbol="X"
-            setPlayersFn={setPlayersFn}
+            setPlayers={setPlayers}
             doHighlight={nextSymbol == "X"}
           />
           <Player
             defaultName={players["O"]}
             symbol="O"
-            setPlayersFn={setPlayersFn}
+            setPlayers={setPlayers}
             doHighlight={nextSymbol == "O"}
           />
         </ol>
@@ -38,7 +38,9 @@ function App() {
           const col = hist[currSymbol][1];
 
           return (
-            <li key={row + col}>{currSymbol + ": " + row + ", " + col}</li>
+            <li key={currSymbol + row + col}>
+              {currSymbol + ": " + row + ", " + col}
+            </li>
           );
         })}
       </div>
