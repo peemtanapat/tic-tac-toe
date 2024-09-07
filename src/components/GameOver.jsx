@@ -9,12 +9,14 @@ export default function GameOver({
   setWinner,
   setBlocks,
   setCount,
+  setHistory,
   isDraw,
 }) {
   function handleResetGame() {
     setBlocks(initialBlocks);
     setWinner(null);
     setCount(0);
+    setHistory([]);
   }
 
   return (

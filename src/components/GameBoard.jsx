@@ -7,7 +7,12 @@ let initialBlocks = [
   [null, null, null],
 ];
 
-export default function GameBoard({ players, nextSymbol, setNextSymbol }) {
+export default function GameBoard({
+  players,
+  nextSymbol,
+  setNextSymbol,
+  setHistory,
+}) {
   const [prevSymbol, setPrevSymbol] = useState("");
   const [blocks, setBlocks] = useState(initialBlocks);
   const [rowCol, setRowCol] = useState([null, null]);
@@ -59,6 +64,10 @@ export default function GameBoard({ players, nextSymbol, setNextSymbol }) {
     const [row, _, col] = event.target.value;
     setRowCol([row, col]);
 
+    setHistory((history) => {
+      return [{ [nextSymbol]: [row, col] }, ...history];
+    });
+
     setNextSymbol((curr) => {
       setPrevSymbol(curr);
       const newSymbol = curr === "X" ? "O" : "X";
@@ -85,6 +94,7 @@ export default function GameBoard({ players, nextSymbol, setNextSymbol }) {
           winner={winner}
           setWinner={setWinner}
           setBlocks={setBlocks}
+          setHistory={setHistory}
           setCount={setCount}
           isDraw={isDraw}
         />
