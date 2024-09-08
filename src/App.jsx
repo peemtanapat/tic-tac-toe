@@ -1,5 +1,6 @@
 import Player from "./components/Player";
 import GameBoard from "./components/GameBoard";
+import GameLog from "./components/Gamelog";
 import { useState } from "react";
 
 function App() {
@@ -31,19 +32,7 @@ function App() {
           setHistory={setHistory}
         />
       </div>
-      <div id="log">
-        {history.map((hist) => {
-          const currSymbol = Object.keys(hist)[0];
-          const row = hist[currSymbol][0];
-          const col = hist[currSymbol][1];
-
-          return (
-            <li key={currSymbol + row + col}>
-              {currSymbol + ": " + row + ", " + col}
-            </li>
-          );
-        })}
-      </div>
+      <GameLog history={history} />
     </main>
   );
 }
