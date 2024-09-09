@@ -11,6 +11,7 @@ export default function GameBoard({
   players,
   nextSymbol,
   setNextSymbol,
+  history,
   setHistory,
 }) {
   const [prevSymbol, setPrevSymbol] = useState("");
@@ -60,12 +61,18 @@ export default function GameBoard({
   }
 
   async function handleOnSelectBlock(row, col) {
+    const rolCol = row + "" + col;
+
+    if (history[rolCol]) {
+      return;
+    }
+
     setCount((count) => count + 1);
 
     setRowCol([row, col]);
 
     setHistory((history) => {
-      return [{ [nextSymbol]: [row, col] }, ...history];
+      return { ...history, [rolCol]: nextSymbol };
     });
 
     setNextSymbol((curr) => {

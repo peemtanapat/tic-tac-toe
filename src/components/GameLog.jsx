@@ -1,15 +1,13 @@
 export default function GameLog({ history }) {
   return (
     <div id="log">
-      {history.map((hist) => {
-        const currSymbol = Object.keys(hist)[0];
-        const row = hist[currSymbol][0];
-        const col = hist[currSymbol][1];
+      {Object.entries(history).map(([key, value]) => {
+        const row = key.charAt(0);
+        const col = key.charAt(1);
+        const symbol = value;
 
         return (
-          <li key={currSymbol + row + col}>
-            {currSymbol + ": " + row + ", " + col}
-          </li>
+          <li key={symbol + row + col}>{symbol + ": " + row + ", " + col}</li>
         );
       })}
     </div>

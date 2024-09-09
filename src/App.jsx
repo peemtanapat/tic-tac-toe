@@ -29,6 +29,7 @@ function App() {
           players={players}
           nextSymbol={nextSymbol}
           setNextSymbol={setNextSymbol}
+          history={history}
           setHistory={setHistory}
         />
       </div>
