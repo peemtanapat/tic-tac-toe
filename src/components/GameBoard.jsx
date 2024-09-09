@@ -59,9 +59,9 @@ export default function GameBoard({
     }
   }
 
-  async function handleOnSelectBlock(event) {
+  async function handleOnSelectBlock(row, col) {
     setCount((count) => count + 1);
-    const [row, _, col] = event.target.value;
+
     setRowCol([row, col]);
 
     setHistory((history) => {
@@ -106,8 +106,7 @@ export default function GameBoard({
               {row.map((playSymbol, columnIndex) => (
                 <li key={columnIndex}>
                   <button
-                    value={[rowIndex, columnIndex]}
-                    onClick={handleOnSelectBlock}
+                    onClick={() => handleOnSelectBlock(rowIndex, columnIndex)}
                   >
                     {playSymbol}
                   </button>
