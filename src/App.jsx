@@ -23,7 +23,6 @@ function App() {
 
   function handleResetGame() {
     setRecords([]);
-    grid = INITIAL_GRID;
   }
 
   function handleMark(newRow, newCol) {
