@@ -23,11 +23,17 @@ export default function Player({
 
   function handleOnChange(event) {
     const newName = event.target.value;
-    setPlayers((players) => {
-      players[symbol] = newName;
-      return players;
-    });
     setPlayerName(newName);
+  }
+
+  function handleOnSave(newName) {
+    setPlayers((players) => {
+      return {
+        ...players,
+        [symbol]: newName,
+      };
+    });
+    setIsEditing(false);
   }
 
   return (
@@ -37,7 +43,11 @@ export default function Player({
       <span className="player-symbol">{symbol}</span>
 
       <span>
-        <button onClick={handleClickEdit}>{isEditing ? "Save" : "Edit"}</button>
+        <button
+          onClick={isEditing ? () => handleOnSave(playerName) : handleClickEdit}
+        >
+          {isEditing ? "Save" : "Edit"}
+        </button>
       </span>
     </li>
   );

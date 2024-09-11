@@ -1,121 +1,19 @@
-import React, { useState } from "react";
-import GameOver from "./GameOver";
+import React from "react";
 
-let initialBlocks = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null],
-];
-
-export default function GameBoard({
-  players,
-  nextSymbol,
-  setNextSymbol,
-  history,
-  setHistory,
-}) {
-  const [prevSymbol, setPrevSymbol] = useState("");
-  const [blocks, setBlocks] = useState(initialBlocks);
-  const [rowCol, setRowCol] = useState([null, null]);
-  const [count, setCount] = useState(0);
-
-  const [winner, setWinner] = useState(null);
-
-  function checkWin(updatedBlocks, symbol, rowCol) {
-    const [row, col] = rowCol;
-
-    if (row == null || col == null) {
-      return;
-    }
-
-    // horizontal
-    if (updatedBlocks[row].every((col) => col == symbol)) {
-      setWinner(players[symbol]);
-    }
-    // vertical
-    else if (
-      [
-        updatedBlocks[0][col],
-        updatedBlocks[1][col],
-        updatedBlocks[2][col],
-      ].every((elem) => elem == symbol)
-    ) {
-      setWinner(players[symbol]);
-    }
-    // diagonal /
-    else if (
-      [updatedBlocks[0][2], updatedBlocks[1][1], updatedBlocks[2][0]].every(
-        (elem) => elem == symbol
-      )
-    ) {
-      setWinner(players[symbol]);
-    }
-    // diagonal \
-    else if (
-      [updatedBlocks[0][0], updatedBlocks[1][1], updatedBlocks[2][2]].every(
-        (elem) => elem == symbol
-      )
-    ) {
-      setWinner(players[symbol]);
-    }
-  }
-
-  async function handleOnSelectBlock(row, col) {
-    const rolCol = row + "" + col;
-
-    if (history[rolCol]) {
-      return;
-    }
-
-    setCount((count) => count + 1);
-
-    setRowCol([row, col]);
-
-    setHistory((history) => {
-      return { ...history, [rolCol]: nextSymbol };
-    });
-
-    setNextSymbol((curr) => {
-      setPrevSymbol(curr);
-      const newSymbol = curr === "X" ? "O" : "X";
-      return newSymbol;
-    });
-
-    // replace the specific row,col with X
-    setBlocks((prevBlocks) => {
-      const updatedBlocks = [
-        ...prevBlocks.map((innerBlock) => [...innerBlock]),
-      ];
-      updatedBlocks[row][col] = nextSymbol;
-      checkWin(updatedBlocks, nextSymbol, [row, col]);
-      return updatedBlocks;
-    });
-  }
-
-  const isDraw = winner == null && count === 9;
-
+export default function GameBoard({ grid, handleMark }) {
   return (
     <>
-      {(winner || isDraw) && (
-        <GameOver
-          winner={winner}
-          setWinner={setWinner}
-          setBlocks={setBlocks}
-          setHistory={setHistory}
-          setCount={setCount}
-          isDraw={isDraw}
-        />
-      )}
       <ol id="game-board">
-        {blocks.map((row, rowIndex) => (
+        {grid.map((row, rowIndex) => (
           <li key={rowIndex}>
             <ol>
-              {row.map((playSymbol, columnIndex) => (
+              {row.map((symbol, columnIndex) => (
                 <li key={columnIndex}>
                   <button
-                    onClick={() => handleOnSelectBlock(rowIndex, columnIndex)}
+                    onClick={() => handleMark(rowIndex, columnIndex)}
+                    disabled={symbol !== null}
                   >
-                    {playSymbol}
+                    {symbol}
                   </button>
                 </li>
               ))}

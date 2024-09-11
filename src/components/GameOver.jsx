@@ -1,28 +1,9 @@
-let initialBlocks = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null],
-];
-
-export default function GameOver({
-  winner,
-  setWinner,
-  setBlocks,
-  setCount,
-  setHistory,
-  isDraw,
-}) {
-  function handleResetGame() {
-    setBlocks(initialBlocks);
-    setWinner(null);
-    setCount(0);
-    setHistory([]);
-  }
-
+export default function GameOver({ winner, handleResetGame, isDraw }) {
   return (
     <div id="game-over">
       <h2>Game Over!</h2>
-      <p>{isDraw ? "It's a draw" : winner + " won!"}</p>
+      {winner && <p>{winner} won!</p>}
+      {!winner && <p>It's a draw</p>}
       <button onClick={handleResetGame}>Rematch</button>
     </div>
   );
