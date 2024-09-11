@@ -1,5 +1,7 @@
 # Tic-Tac-Toe
 
+<img src="readme_src/ui_example.png" width="256"/>
+
 A simple Tic-Tac-Toe game built with React.js.
 
 ## Features
