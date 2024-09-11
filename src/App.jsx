@@ -5,9 +5,7 @@ import GameOver from "./components/GameOver";
 import GameLog from "./components/Gamelog";
 import { getNextPlayer, getWinner } from "./helpers/playerHelper";
 import { getGrid } from "./helpers/gridHelper";
-import { INITIAL_GRID } from "./constants";
-
-const INITIAL_PLAYERS = { X: "Player 1", O: "Player 2" };
+import { INITIAL_PLAYERS } from "./constants";
 
 function App() {
   const [players, setPlayers] = useState(INITIAL_PLAYERS);

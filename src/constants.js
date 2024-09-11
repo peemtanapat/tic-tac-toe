@@ -4,6 +4,8 @@ export const INITIAL_GRID = [
   [null, null, null],
 ];
 
+export const INITIAL_PLAYERS = { X: "Player 1", O: "Player 2" };
+
 export const WIN_RULES = [
   [
     { row: 0, col: 0 },
